@@ -22,8 +22,13 @@ app.get('/', (req, res) => {
 });
 
 // เรียกใช้ Route ที่สร้างไว้
+// ทดสอบ get
 const dormitoryRoutes = require('./routes/dormitories');
 app.use('/api/dormitories', dormitoryRoutes);
+
+// addDormitory
+const addDormitoryRoutes = require("./routes/addDormitory");
+app.use('/api/addDormitory' , addDormitoryRoutes);
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
