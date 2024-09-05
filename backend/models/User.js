@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   phoneNumber: String, // เบอร์โทรศัพท์
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
+},{
+  collection: 'User'
 });
 
 module.exports = mongoose.model('User', userSchema);
