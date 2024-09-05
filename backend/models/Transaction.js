@@ -10,6 +10,8 @@ const transactionSchema = new mongoose.Schema({
   status: { type: String, enum: ['pending', 'completed', 'failed'], default: 'pending' }, // สถานะการทำธุรกรรม pending รอดำเนินการ
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
+}, {
+  collection: 'Transaction'
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);
