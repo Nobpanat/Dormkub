@@ -11,7 +11,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-console.log(process.env.GOOGLE_CLIENT_ID);
+// console.log(process.env.GOOGLE_CLIENT_ID);
 
 // ใช้ express-session แทน cookie-session
 app.use(
@@ -47,9 +47,6 @@ app.get('/', (req, res) => {
 const dormitoryRoutes = require('./routes/dormitories');
 app.use('/api/dormitories', dormitoryRoutes);
 
-// addDormitory
-const addDormitoryRoutes = require("./routes/addDormitory");
-app.use('/api/addDormitory' , addDormitoryRoutes);
 
 // user
 const userRoutes = require('./routes/users');
@@ -58,6 +55,8 @@ const authRoutes = require('./routes/auth');
 app.use('/api/users', userRoutes); // เส้นทางการจัดการผู้ใช้
 app.use('/auth', authRoutes); // เส้นทางที่เกี่ยวกับการ authenticate
 
+const contractRoutes = require('./routes/contracts');
+app.use('/api/contracts', contractRoutes);
 
 
 // Routes สำหรับ Google Login
