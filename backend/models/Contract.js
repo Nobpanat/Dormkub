@@ -33,8 +33,8 @@ const contractSchema = new mongoose.Schema({
   },
   status: { 
     type: String, 
-    enum: ['active', 'subleased', 'terminated'], 
-    default: 'active',
+    enum: ['pending', 'completed', 'terminated'], 
+    default: 'pending',
     required: [true, 'Status is required'] 
   },
   price: { 
@@ -47,14 +47,20 @@ const contractSchema = new mongoose.Schema({
     default: 0,
     min: [0, 'Deposit must be a positive number'] 
   },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
-  },
-  updatedAt: { 
-    type: Date, 
-    default: Date.now 
-  }
+  totalPrice: { 
+    type: Number, 
+    default: 0,
+    min: [0, 'Total price must be a positive number'] 
+  },  
+  type: { type: String, enum: ['rent',  'sublease'], required: true }, // ประเภทการทำธุรกรรม 1. ค่าเช่า 2. การเช่าช่วง
+  // createdAt: { 
+  //   type: Date, 
+  //   default: Date.now 
+  // },
+  // updatedAt: { 
+  //   type: Date, 
+  //   default: Date.now 
+  // }
 }, {
   timestamps: true, // เปิดใช้งาน timestamps (createdAt และ updatedAt จะถูกจัดการให้อัตโนมัติ)
   collection: 'Contract'

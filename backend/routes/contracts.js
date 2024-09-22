@@ -7,7 +7,7 @@ const Dormitory = require('../models/Dormitory');
 // POST /api/contracts: สร้างสัญญาใหม่
 router.post('/', async (req, res) => {
   try {
-    const { tenantId, ownerId, dormitoryId, startDate, endDate, price, deposit } = req.body;
+    const { tenantId, ownerId, dormitoryId, startDate, endDate, price, deposit ,status , totalPrice,type } = req.body;
 
     // ตรวจสอบความถูกต้องของ tenantId, ownerId, dormitoryId
     const [tenantExists, ownerExists, dormitoryExists] = await Promise.all([
@@ -24,13 +24,16 @@ router.post('/', async (req, res) => {
 
     // สร้างสัญญาใหม่
     const newContract = new Contract({
-      tenantId,
-      ownerId,
       dormitoryId,
+      ownerId,
+      tenantId,
       startDate,
       endDate,
+      status,
       price,
-      deposit
+      deposit,
+      totalPrice,
+      type
     });
     const savedContract = await newContract.save();
     

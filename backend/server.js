@@ -1,17 +1,20 @@
 // backend/server.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const passport = require('passport');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const passport = require("passport");
 // const cookieSession = require('cookie-session');
-const session = require('express-session');
-require('./config/passport-setup'); // นำเข้าไฟล์ตั้งค่า Passport
-require('dotenv').config();
+const session = require("express-session");
+require("./config/passport-setup"); // นำเข้าไฟล์ตั้งค่า Passport
+require("dotenv").config();
+const { Xendit } = require("xendit-node");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// console.log(process.env.GOOGLE_CLIENT_ID);
+// Initialize Xendit client
+const xenditClient = new Xendit({ secretKey: process.env.XENDIT_SECRET });
+const { Invoice } = xenditClient;
 
 // ใช้ express-session แทน cookie-session
 app.use(
@@ -23,7 +26,6 @@ app.use(
   })
 );
 
-
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -33,54 +35,61 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('Error connecting to MongoDB:', err));
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 // Sample Route for root URL
-app.get('/', (req, res) => {
-  res.send('API is running...');
+app.get("/", (req, res) => {
+  res.send("API is running...");
 });
 
 // เรียกใช้ Route ที่สร้างไว้
 // ทดสอบ get
-const dormitoryRoutes = require('./routes/dormitories');
-app.use('/api/dormitories', dormitoryRoutes);
-
+const dormitoryRoutes = require("./routes/dormitories");
+app.use("/api/dormitories", dormitoryRoutes);
 
 // user
-const userRoutes = require('./routes/users');
-const authRoutes = require('./routes/auth');
+const userRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
 
-app.use('/api/users', userRoutes); // เส้นทางการจัดการผู้ใช้
-app.use('/auth', authRoutes); // เส้นทางที่เกี่ยวกับการ authenticate
+app.use("/api/users", userRoutes); // เส้นทางการจัดการผู้ใช้
+app.use("/auth", authRoutes); // เส้นทางที่เกี่ยวกับการ authenticate
 
-const contractRoutes = require('./routes/contracts');
-app.use('/api/contracts', contractRoutes);
+const contractRoutes = require("./routes/contracts");
+app.use("/api/contracts", contractRoutes);
 
+// Route สร้าง invoice
+// app.post("/create-invoice", async (req, res) => {
+//   try {
+//     const invoiceData = {
+//       "amount" : 10000,
+//       "invoiceDuration" : 172800,
+//       "externalId" : "test1234",
+//       "description" : "Test Invoice",
+//       "currency" : "THB",
+//       "reminderTime" : 1
+//     };
 
-// Routes สำหรับ Google Login
-// app.get('/auth/google',passport.authenticate('google', {
-//     scope: ['profile', 'email'],
-//   })
-// );
-
-// app.get('/auth/google/callback',passport.authenticate('google'),
-//   (req, res) => {
-//     // หลังจากล็อกอินสำเร็จ ส่งกลับไปที่หน้า Home หรือหน้าอื่น ๆ
-//     res.redirect('/dashboard');
+//     // สร้าง invoice
+//     const invoice = await Invoice.createInvoice({ data: invoiceData });
+//     console.log(invoice);
+//     // รับ `invoice_url` จากการตอบกลับ
+//     const invoiceUrl = invoice.invoiceUrl;
+//     // ส่งกลับ URL สำหรับหน้าชำระเงิน
+//     res.json({ success: true, invoiceUrl });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, error: error.message });
 //   }
-// );
-
-// Route สำหรับ Logout
-// app.get('/auth/logout', (req, res) => {
-// req.logout((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.redirect('/');
-//   });
 // });
 
+const createInvoiceRoutes = require("./routes/create-invoice");
+app.use("/api/create-invoice", createInvoiceRoutes);
+
 // Start Server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);
+

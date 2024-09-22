@@ -8,9 +8,10 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['owner', 'tenant'], required: true }, // กำหนดบทบาทเป็นเจ้าของหรือผู้เช่า
   profileImage: String, // URL ของภาพโปรไฟล์จาก Google
   phoneNumber: String, // เบอร์โทรศัพท์
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  // createdAt: { type: Date, default: Date.now },
+  // updatedAt: { type: Date, default: Date.now }
 },{
+  timestamps: true, // เปิดใช้งาน timestamps (createdAt และ updatedAt จะถูกจัดการให้อัตโนมัติ)
   collection: 'User'
 });
 

@@ -4,31 +4,6 @@ const passport = require('passport');
 const router = express.Router();
 const User = require('../models/User');
 
-// POST /api/users/google: ลงชื่อเข้าใช้หรือสมัครใหม่ด้วย Google
-// router.get(
-//   '/google',
-//   passport.authenticate('google', { scope: ['profile', 'email'] })
-// );
-
-// // Google OAuth callback
-// router.get(
-//   '/google/callback',
-//   passport.authenticate('google', { failureRedirect: '/' }),
-//   (req, res) => {
-//     res.redirect('/'); // เปลี่ยน path ตามที่ต้องการหลังจากล็อกอินสำเร็จ
-//   }
-// );
-
-// // logut session 
-// router.get('/logout', (req, res) => {
-//     req.logout((err) => {
-//       if (err) {
-//         return next(err);
-//       }
-//       res.redirect('/');
-//     });
-//   });
-  
 
 // GET /api/users/:id: ดึงข้อมูลผู้ใช้ตาม ID
 router.get('/:id', async (req, res) => {
