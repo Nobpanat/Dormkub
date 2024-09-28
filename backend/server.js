@@ -9,6 +9,9 @@ require("./config/passport-setup"); // นำเข้าไฟล์ตั้�
 require("dotenv").config();
 const { Xendit } = require("xendit-node");
 
+const cookieParser = require('cookie-parser');
+const verifyJWT = require('./middleware/verifyJWT');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -31,8 +34,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware
-app.use(cors());
+app.use(cors(
+  {
+    origin: "http://localhost:5000",
+    credentials: true,
+  }
+));
 app.use(express.json());
+app.use(cookieParser());
 
 // Connect to MongoDB
 mongoose
@@ -85,7 +94,7 @@ app.use("/api/contracts", contractRoutes);
 //   }
 // });
 
-const createInvoiceRoutes = require("./routes/create-invoice");
+const createInvoiceRoutes = require("./routes/createInvoice");
 app.use("/api/create-invoice", createInvoiceRoutes);
 
 // Start Server
