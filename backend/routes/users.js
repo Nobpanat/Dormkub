@@ -4,9 +4,10 @@ const router = express.Router();
 
 // import user controller
 const usersController = require('../controllers/usersController');
+const verifyJWT = require('../middleware/verifyJWT');   
 
-// GET /api/users/:id: ดึงข้อมูลผู้ใช้ตาม ID
-router.get('/:id', usersController.getUserById);
+// GET /api/users/profile
+router.get('/profile',verifyJWT, usersController.getUserByIdFromToken);
 
 // PUT /api/users/:id: อัปเดตข้อมูลผู้ใช้
 router.put('/:id', usersController.updateUserById);

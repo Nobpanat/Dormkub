@@ -84,3 +84,32 @@ exports.deleteDormitory = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// controllers/dormitoriesController.js
+
+exports.searchDormitories = async (req, res) => {
+  try {
+    const { searchTerm } = req.query;
+    console.log("searchTerm is", searchTerm);
+
+    let dormitories = [];
+
+    // ตรวจสอบว่า searchTerm เป็น string และไม่เป็นค่าว่าง
+    if (typeof searchTerm === 'string' && searchTerm.trim()) {
+      dormitories = await Dormitory.find({
+        $or: [
+          { name: { $regex: searchTerm, $options: 'i' } }, // ค้นหาชื่อหอพักที่คล้ายกัน
+          { address: { $regex: searchTerm, $options: 'i' } } // ค้นหาที่อยู่ที่คล้ายกัน
+        ]
+      });
+    } else {
+      console.log("searchTerm is invalid");
+    }
+
+    res.status(200).json(dormitories);
+  } catch (error) {
+    console.error("error is", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+

@@ -4,6 +4,10 @@ const router = express.Router();
 
 const dormitoriesController = require('../controllers/dormitoriesController');
 
+
+// GET /api/dormitories/search: ค้นหาหอพัก
+router.get('/search' , dormitoriesController.searchDormitories);
+
 // POST /api/dormitories: เพิ่มหอพักใหม่ (สำหรับเจ้าของหอพัก)
 router.post('/', dormitoriesController.addDormitory);
 

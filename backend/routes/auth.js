@@ -4,6 +4,8 @@ const router = express.Router();
 // import auth controller
 const authController = require('../controllers/authController');
 
+const verifyJWT = require('../middleware/verifyJWT'); 
+
 // POST /auth/google: ลงชื่อเข้าใช้หรือสมัครใหม่ด้วย Google
 router.get('/google', authController.authGoogle);
 
@@ -12,6 +14,6 @@ router.get('/google/callback', authController.authGoogleCallback);
 
 
 // Logout
-router.get('/logout', authController.logout);
+router.post('/logout', authController.logout);
 
 module.exports = router;

@@ -7,7 +7,7 @@ const passport = require("passport");
 const session = require("express-session");
 require("./config/passport-setup"); // นำเข้าไฟล์ตั้งค่า Passport
 require("dotenv").config();
-const { Xendit } = require("xendit-node");
+// const { Xendit } = require("xendit-node");
 
 const cookieParser = require('cookie-parser');
 const verifyJWT = require('./middleware/verifyJWT');
@@ -16,8 +16,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Initialize Xendit client
-const xenditClient = new Xendit({ secretKey: process.env.XENDIT_SECRET });
-const { Invoice } = xenditClient;
+// const xenditClient = new Xendit({ secretKey: process.env.XENDIT_SECRET });
+// const { Invoice } = xenditClient;
 
 // ใช้ express-session แทน cookie-session
 app.use(
@@ -34,12 +34,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware
-app.use(cors(
-  {
-    origin: "http://localhost:5000",
-    credentials: true,
-  }
-));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // ระบุ URL ของ frontend
+    credentials: true, // อนุญาตให้ส่งข้อมูลคุกกี้หรือ session
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
 

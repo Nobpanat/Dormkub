@@ -24,23 +24,34 @@ exports.authGoogleCallback = [
       // ส่ง JWT ใน HTTP-only, Secure cookie
       res.cookie('jwt', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: false,
         sameSite: 'Strict',
         maxAge: 24 * 60 * 60 * 1000,
       });
   
       // Redirect ไปที่หน้า dashboard
-      res.redirect('/dashboard');
+      res.redirect('http://localhost:5173');
     }
   ];
   
 
 // function logout
 exports.logout = (req, res) => {
+  console.log('logout requested');
+  
+  // ทำการออกจากระบบใน passport session
   req.logout((err) => {
     if (err) {
-      return next(err);
+      return res.status(500).json({ message: 'Error during logout' });
     }
-    res.redirect('/');
+
+    // ลบ JWT
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Strict',
+    });
+
+    res.status(200).json({ message: 'Logged out successfully' });
   });
 };

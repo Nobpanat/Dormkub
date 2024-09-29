@@ -2,9 +2,9 @@
 
 const User = require('../models/User');
 
-exports.getUserById = async (req, res) => {
+exports.getUserByIdFromToken = async (req, res) => {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.userId); 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
