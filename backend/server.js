@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 // const xenditClient = new Xendit({ secretKey: process.env.XENDIT_SECRET });
 // const { Invoice } = xenditClient;
 
-// ใช้ express-session แทน cookie-session
+// ใช้ express-session 
 app.use(
   session({
     secret: process.env.COOKIE_KEY, // ใช้ secret key จาก .env
