@@ -2,21 +2,16 @@
 const mongoose = require('mongoose');
 
 const dormitorySchema = new mongoose.Schema({
-  name: { type: String, required: true }, // ชื่อหอพัก
-  address: { type: String, required: true }, // ที่อยู่ของหอพัก
-  price: { type: Number, required: true }, // ราคาเช่า
-  size: { type: Number }, // ขนาดห้องพัก
-  deposit: { type: Number }, // ค่ามัดจำ
-  description: { type: String }, // คำอธิบายเพิ่มเติมเกี่ยวกับหอพัก
-  amenities: [{ type: String }], // สิ่งอำนวยความสะดวก เช่น Free Wi-Fi, Air Conditioning
-  images: [{ type: String }], // URL ของรูปภาพหอพัก
-  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // อ้างอิงไปที่เจ้าของหอพัก
-  available: { type: Boolean, default: true }, // สถานะว่างให้เช่า
-  // createdAt: { type: Date, default: Date.now },
-  // updatedAt: { type: Date, default: Date.now }
-} , { 
-  timestamps: true, // เปิดใช้งาน timestamps (createdAt และ updatedAt จะถูกจัดการให้อัตโนมัติ)
-  collection: 'Dorm' // ระบุชื่อ collection ให้ตรงกับที่อยู่ใน MongoDB
-});
+  id_owner_Dormitory: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true },
+  description: { type: String },
+  address: { type: String, required: true },
+  dormitoryImage: [{ type: String }], 
+  id_user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+}, {
+   timestamps: true,
+   collection: 'Dormitory'
+  }); 
 
 module.exports = mongoose.model('Dormitory', dormitorySchema);
+

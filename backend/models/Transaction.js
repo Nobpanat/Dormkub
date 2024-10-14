@@ -1,3 +1,7 @@
+// ไม่ใช้
+
+
+
 // models/Transaction.js
 const mongoose = require('mongoose');
 
