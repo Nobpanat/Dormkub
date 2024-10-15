@@ -2,25 +2,26 @@
 const express = require('express');
 const router = express.Router();
 
-const dormitoriesController = require('../controllers/dormitoriesController');
+const dormitoryController = require('../controllers/dormitoryController');
+const verifyJWT = require('../middleware/verifyJWT');
 
 
 // GET /api/dormitories/search: ค้นหาหอพัก
-router.get('/search' , dormitoriesController.searchDormitories);
+// router.get('/search' , dormitoriesController.searchDormitories);
 
 // POST /api/dormitories: เพิ่มหอพักใหม่ (สำหรับเจ้าของหอพัก)
-router.post('/', dormitoriesController.addDormitory);
+router.post('/', verifyJWT,  dormitoryController.createDormitory);
 
-// GET /api/dormitories: ดึงรายการหอพักทั้งหมด
-router.get('/', dormitoriesController.getAllDormitories);
+// // GET /api/dormitories: ดึงรายการหอพักทั้งหมด
+router.get('/', dormitoryController.getAllDormitories);
 
-// GET /api/dormitories/:id: ดึงข้อมูลหอพักตาม ID
-router.get('/:id', dormitoriesController.getDormitoryById);
+// // GET /api/dormitories/:id: ดึงข้อมูลหอพักตาม ID
+router.get('/:id', dormitoryController.getDormitoryById);
 
 // PUT /api/dormitories/:id: แก้ไขข้อมูลหอพัก (สำหรับเจ้าของหอพัก)
-router.put('/:id', dormitoriesController.updateDormitory);
+router.put('/:id', verifyJWT , dormitoryController.updateDormitory);
 
-// DELETE /api/dormitories/:id: ลบหอพัก (สำหรับเจ้าของหอพัก)
-router.delete('/:id', dormitoriesController.deleteDormitory);
+// // DELETE /api/dormitories/:id: ลบหอพัก (สำหรับเจ้าของหอพัก)
+router.delete('/:id',verifyJWT, dormitoryController.deleteDormitory);
 
 module.exports = router;

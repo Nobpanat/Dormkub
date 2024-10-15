@@ -98,6 +98,15 @@ app.use("/api/contracts", contractRoutes);
 const createInvoiceRoutes = require("./routes/createInvoice");
 app.use("/api/create-invoice", createInvoiceRoutes);
 
+
+// route booking
+const bookingRoutes = require("./routes/bookings");
+app.use("/api/bookings", bookingRoutes);
+
+// route room
+const roomRoutes = require("./routes/rooms");
+app.use("/api/rooms", roomRoutes);
+
 // Start Server
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)

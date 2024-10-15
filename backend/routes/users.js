@@ -10,9 +10,9 @@ const verifyJWT = require('../middleware/verifyJWT');
 router.get('/profile',verifyJWT, usersController.getUserByIdFromToken);
 
 // PUT /api/users/:id: อัปเดตข้อมูลผู้ใช้
-router.put('/:id', usersController.updateUserById);
+router.put('/profile', verifyJWT , usersController.updateUserById);
 
 // DELETE /api/users/:id: ลบผู้ใช้
-router.delete('/:id', usersController.deleteUserById);  
+router.delete('/profile',verifyJWT, usersController.deleteUserById);  
 
 module.exports = router;

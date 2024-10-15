@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
     id_owner_room: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    id_dormitory: { type: mongoose.Schema.Types.ObjectId, ref: 'Dormitory', required: true },
     roomtype: { type: String, required: true },
     size: { type: Number, required: true }, 
     rent: { type: Number, required: true },

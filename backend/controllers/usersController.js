@@ -15,24 +15,30 @@ exports.getUserByIdFromToken = async (req, res) => {
 };
 
 exports.updateUserById =  async (req, res) => {
+    const {name , profileImage} = req.body;
+    const userId = req.userId;  // มาจาก verifyJWT
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
-      if (!user) {
+      const updatedUser = await User.findByIdAndUpdate(userId, 
+        {name , profileImage}, 
+        {new: true,}
+    );
+      if (!updatedUser) {
         return res.status(404).json({ message: 'User not found' });
       }
-      res.json(user);
+      res.status(200).json(updatedUser);
     } catch (err) {
-      res.status(500).json({ message: 'Error updating user data' });
+      res.status(500).json({ message: 'Error updating user data',err });
     }
 };
 
 exports.deleteUserById = async (req, res) => {
+    const userId = req.userId;  // มาจาก verifyJWT
+
     try {
-      await User.findByIdAndDelete(req.params.id);
-      res.json({ message: 'User deleted successfully' });
+      const deletedUser = await User.findByIdAndDelete(userId);
+      if(!deletedUser) return res.status(404).json({ message: 'User not found' });
+      res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
-      res.status(500).json({ message: 'Error deleting user' });
+      res.status(500).json({ message: 'Error deleting user' ,err});
     }
 };

@@ -7,7 +7,6 @@ const dormitorySchema = new mongoose.Schema({
   description: { type: String },
   address: { type: String, required: true },
   dormitoryImage: [{ type: String }], 
-  id_user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, {
    timestamps: true,
    collection: 'Dormitory'
