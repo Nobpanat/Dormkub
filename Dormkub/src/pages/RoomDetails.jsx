@@ -55,7 +55,7 @@ const RoomDetails = () => {
         <DetailRoom room={room}/>
 
       </div>
-      <img src="https://d3mvlb3hz2g78.cloudfront.net/wp-content/uploads/2013/06/thumb_720_450_dreamstime_xxl_20152679-Custom.jpg" alt="No img" />
+      <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true" alt="No img" />
       <Footer />
     </>
   );
