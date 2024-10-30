@@ -55,8 +55,7 @@ const RoomDetails = () => {
         <DetailRoom room={room}/>
 
       </div>
-      {/* <img src="https://drive.google.com/uc?export=view&id=1KIs-IkHVOMX5-u0l1p8_dA5Mlh8fD98d
-" alt="No img" /> */}
+      <img src="https://d3mvlb3hz2g78.cloudfront.net/wp-content/uploads/2013/06/thumb_720_450_dreamstime_xxl_20152679-Custom.jpg" alt="No img" />
       <Footer />
     </>
   );
