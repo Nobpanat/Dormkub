@@ -8,7 +8,7 @@ const bookingSchema = new mongoose.Schema({
     bookingStatus: { type: mongoose.Schema.Types.ObjectId, ref: 'BookingStatus', required: true } // เชื่อมกับ BookingStatus
   }, { 
     timestamps: true,
-    collation : 'Booking'
+    collection : 'Booking'
 }); 
   
 module.exports = mongoose.model('Booking', bookingSchema);

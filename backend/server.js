@@ -38,8 +38,16 @@ app.use(
   cors({
     origin: "http://localhost:5173", // ระบุ URL ของ frontend
     credentials: true, // อนุญาตให้ส่งข้อมูลคุกกี้หรือ session
+    // allowedHeaders: ["Content-Type", "Authorization"],
+    // exposedHeaders:["Content-Security-Policy"],
   })
 );
+
+// // Set Content-Security-Policy for images
+// app.use((req, res, next) => {
+//   res.setHeader("Content-Security-Policy", "img-src 'self' https://lh3.googleusercontent.com");
+//   next();
+// });
 
 app.use(express.json());
 app.use(cookieParser());
@@ -106,6 +114,10 @@ app.use("/api/bookings", bookingRoutes);
 // route room
 const roomRoutes = require("./routes/rooms");
 app.use("/api/rooms", roomRoutes);
+
+// route facility
+const facilityRoutes = require("./routes/facilities");
+app.use("/api/facilities", facilityRoutes);
 
 // Start Server
 app.listen(PORT, () =>

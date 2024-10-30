@@ -24,4 +24,7 @@ router.delete('/:id', verifyJWT, roomController.deleteRoomById);
 // PUT /api/rooms/ updateRoomStatus
 router.put('/updateRoomStatus/:id', verifyJWT, roomController.updateRoomStatus);
 
+// GET /api/rooms/getAll/SuggestRooms
+router.get('/getAll/SuggestRooms', roomController.getAllSuggestRooms);
+
 module.exports = router;

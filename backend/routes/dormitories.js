@@ -24,4 +24,7 @@ router.put('/:id', verifyJWT , dormitoryController.updateDormitory);
 // // DELETE /api/dormitories/:id: ลบหอพัก (สำหรับเจ้าของหอพัก)
 router.delete('/:id',verifyJWT, dormitoryController.deleteDormitory);
 
+// POST /api/dorm/search: ค้นหาหอพัก
+router.get('/dorm/search', dormitoryController.searchDormitories);
+
 module.exports = router;

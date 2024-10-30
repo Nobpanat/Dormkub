@@ -10,7 +10,7 @@ const Dormitory = require('../models/Dormitory');
 // create room
 exports.createRoom = async (req, res) => {
     const userId = req.userId; // มาจาก verifyJWT
-    const { id_dormitory, roomtype , size , rent , deposit , totalPrice } = req.body;
+    const { id_dormitory, roomtype , size , rent , deposit , totalPrice ,roomImage } = req.body;
     const roomStatus = "670e13b258f0e080c662d971"; // status active
 
     try {
@@ -36,7 +36,9 @@ exports.createRoom = async (req, res) => {
             rent: rent,
             deposit: deposit,
             totalPrice: totalPrice,
-            roomStatus: roomStatus
+            roomStatus: roomStatus,
+            roomImage: roomImage
+
         });
 
         await room.save();
@@ -82,13 +84,22 @@ exports.getRoomById = async (req, res) => {
     const {id} = req.params;
     try{
         const room = await Room.findById(id)
-        .populate('id_owner_room' ,'_id name email profileImage phoneNumber')
-        .populate('roomStatus' , '_id status')
-        .populate('id_dormitory' ,'_id name id_owner_Dormitory description address dormitoryImage');
+        .populate('id_owner_room', '_id name email profileImage phoneNumber')
+            .populate('roomStatus', '_id status')
+            .populate('id_dormitory', '_id name id_owner_Dormitory description address dormitoryImage')
+            .populate({
+                path: 'id_facilityList',
+                populate: {
+                    path: 'facilities', // Assuming this is the field inside FacilityList
+                    model: 'Facility',  // Reference to the Facility model
+                    select: '_id name'  // Only retrieve the _id and name of the facility
+                }
+            });
 
         if(!room){
             return res.status(404).json({ message: 'Room not found'});
         }
+        console.log("room ",room);
 
         res.status(200).json({message: 'Room found', room});
     } catch (err) {
@@ -99,19 +110,28 @@ exports.getRoomById = async (req, res) => {
 
 
 // Get All Rooms
+// Get All Rooms
 exports.getAllRooms = async (req, res) => {
-    try{
+    try {
         const rooms = await Room.find()
-        .populate('id_owner_room' ,'_id name email profileImage phoneNumber')
-        .populate('roomStatus' , '_id status')
-        .populate('id_dormitory' ,'_id name id_owner_Dormitory description address dormitoryImage');
+            .populate('id_owner_room', '_id name email profileImage phoneNumber')
+            .populate('roomStatus', '_id status')
+            .populate('id_dormitory', '_id name id_owner_Dormitory description address dormitoryImage')
+            .populate({
+                path: 'id_facilityList',
+                populate: {
+                    path: 'facilities', // Assuming this is the field inside FacilityList
+                    model: 'Facility',  // Reference to the Facility model
+                    select: '_id name'  // Only retrieve the _id and name of the facility
+                }
+            });
 
         res.status(200).json(rooms);
     } catch (err) {
         res.status(500).json({ message: 'Error fetching room data', err });
     }
-
 };
+
 
 
 // Delete Room by ID
@@ -167,4 +187,26 @@ exports.updateRoomStatus = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: 'Error updating room status', err });
     }
+};
+
+
+// Get all suggest room
+exports.getAllSuggestRooms = async (req, res) => {
+    try {
+        const rooms = await Room.find()
+        .populate('id_dormitory')
+        .populate({
+            path: 'roomStatus', // เชื่อมกับ RoomStatus
+            match: { status: 'active' } // กรองเฉพาะ roomStatus ที่เป็น 'Active'
+        });
+
+        const filteredRooms = rooms.filter(room => room.roomStatus); // กรองเฉพาะห้องที่มี roomStatus เป็น Active
+
+        // console.log(rooms[1].roomStatus.status);
+        res.status(200).json(filteredRooms);
+
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching suggest room data', err });
+    }
+
 };
