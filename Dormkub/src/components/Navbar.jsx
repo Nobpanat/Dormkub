@@ -116,9 +116,10 @@ const Navbar = () => {
         {/* Logo และ Dormkub Link */}
         <div className="flex items-center space-x-2">
           {/* เพิ่ม logo */}
-          <img src="/path/to/logo.png" alt="Logo" className="w-8 h-8" />
-          <Link to="/" className="text-white text-2xl font-bold">
-            Dormkub
+          <Link to="/" >
+          <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true" alt="Logo" 
+          className="w-24 h-12 lg:w-28 lg:h-16" />
+           
           </Link>
         </div>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ContractItem from "./ContractItem";
 
 function DormItem({ imgSrc, dormName, address, price, specialText }) {
   return (
@@ -79,6 +80,7 @@ const Sidebar = () => {
 
 const Suggest = () => {
   const [suggestRooms, setSuggestRooms] = useState([]);
+  const [contractRooms, setContractRooms] = useState([]);
 
   useEffect(() => {
     const fetchSuggestRooms = async () => {
@@ -94,6 +96,22 @@ const Suggest = () => {
     };
 
     fetchSuggestRooms();
+  }, []);
+
+  useEffect(() => {
+    const fetchContractRooms = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/contracts/getAll/Contract"
+        );
+        setContractRooms(response.data);
+        
+      } catch (error) {
+        console.error("Error fetching contract rooms:", error);
+      }
+    };
+
+    fetchContractRooms();
   }, []);
 
   return (
@@ -118,6 +136,26 @@ const Suggest = () => {
               />
             </Link>
           ))}
+          {/* Middle Column: Contract Items */}
+          <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">รายการสัญญา</h1>
+            {contractRooms.map((contract) => (
+              <Link to={`/contract/${contract._id}`} key={contract._id}>
+                <ContractItem
+                  key={contract._id}
+                  dormitoryName={contract.DormitoryName}
+                  address={contract.address}
+                  description={contract.description}
+                  startDate={contract.startDate}
+                  endDate={contract.endDate}
+                  rent={contract.rent}
+                  deposit={contract.deposit}
+                  totalPrice={contract.totalPrice}
+                  roomImage={contract.roomImage[0]} // สมมติว่ามีรูปภาพห้องใน array
+                />
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Right Column: Sidebar */}

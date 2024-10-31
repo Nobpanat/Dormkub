@@ -21,6 +21,7 @@ const RoomDetails = () => {
           `http://localhost:5000/api/rooms/${id}`
         );
         setRoom(response.data.room);
+        // console.log(response.data.room);
       } catch (error) {
         console.error("Error fetching room details", error);
       }
@@ -55,7 +56,7 @@ const RoomDetails = () => {
         <DetailRoom room={room}/>
 
       </div>
-      <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true" alt="No img" />
+      {/* <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/imgDormTong.jpg?raw=true" alt="No img" /> */}
       <Footer />
     </>
   );

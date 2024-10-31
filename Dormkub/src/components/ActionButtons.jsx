@@ -1,19 +1,20 @@
 import axios from 'axios';
 
-const ActionButtons = ({ roomId }) => {
+const ActionButtons = ({ roomId, contractId }) => {
 
   const handleBooking = async () => {
     try {
-      const token = localStorage.getItem('token'); // รับ token จาก localStorage
-      const response = await axios.post('/api/bookings', { roomId }, {
+      const token = localStorage.getItem('token'); // Get token from localStorage
+      const bookingData = roomId ? { roomId } : { contractId }; // Send roomId or contractId based on availability
+      const response = await axios.post('/api/bookings', bookingData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-      alert('จองห้องสำเร็จ');
+      alert(roomId ? 'จองห้องสำเร็จ' : 'จองสัญญาสำเร็จ');
     } catch (err) {
       console.error('Error creating booking:', err);
-      alert('ไม่สามารถจองห้องได้');
+      alert(roomId ? 'ไม่สามารถจองห้องได้' : 'ไม่สามารถจองสัญญาได้');
     }
   };
 
@@ -31,3 +32,4 @@ const ActionButtons = ({ roomId }) => {
 };
 
 export default ActionButtons;
+

@@ -10,7 +10,7 @@ const roomSchema = new mongoose.Schema({
     totalPrice: { type: Number, required: true },
     roomStatus: { type: mongoose.Schema.Types.ObjectId, ref: 'RoomStatus', required: true }, // เชื่อมกับ RoomStatus
     roomImage: [{ type: String }],
-    id_facilityList: { type: mongoose.Schema.Types.ObjectId, ref: 'FacilityList', required: true }, // เชื่อมกับ FacilityList
+    id_facilityList: { type: mongoose.Schema.Types.ObjectId, ref: 'FacilityList' }, // เชื่อมกับ FacilityList
   }, { 
     timestamps: true,
     collection: 'Room'

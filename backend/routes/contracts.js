@@ -12,7 +12,10 @@ router.post('/',verifyJWT, contractController.createContract);
 router.get('/', verifyJWT ,contractController.getAllContracts);
 
 // GET /api/contracts/:id: ดึงข้อมูลสัญญาตาม ID
-router.get('/:id', verifyJWT ,contractController.getContractById);
+router.get('/:id' ,contractController.getContractById);
+
+// GET /api/contracts/ : ดึงรายการสัญญาทั้งหมด
+router.get('/getAll/contract', contractController.getAllContract);
 
 // // PUT /api/contracts/:id: อัปเดตข้อมูลสัญญา
 // router.put('/:id', contractController.updateContract);
