@@ -175,14 +175,15 @@ const Navbar = () => {
 
           {/* ลิงก์เพิ่มเติม */}
           <div className="flex flex-wrap justify-center lg:justify-start space-x-4">
-            <Link to="/about" className="text-white hover:text-gray-400">
+            <Link to="/ManageContract" className="text-white hover:text-gray-400">
               ลงประกาศ
               <br /> ขายสัญญา
-              <br /> หอพัก
+              <br /> จัดการสัญญา
             </Link>
-            <Link to="/services" className="text-white hover:text-gray-400">
+            <Link to="/ManageDormitory" className="text-white hover:text-gray-400">
               ลงประกาศ
               <br /> หอพัก
+              <br /> จัดการหอพัก
             </Link>
             <Link to="/bookingList" className="text-white hover:text-gray-400">
               รายการ <br />
@@ -206,10 +207,10 @@ const Navbar = () => {
               {showProfileDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
                   <Link
-                    to="/account"
+                    to="/history"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                   >
-                    ตั้งค่าบัญชี
+                    ประวัติการจอง
                   </Link>
                   <button
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"

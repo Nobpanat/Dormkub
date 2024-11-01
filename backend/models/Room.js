@@ -11,6 +11,7 @@ const roomSchema = new mongoose.Schema({
     roomStatus: { type: mongoose.Schema.Types.ObjectId, ref: 'RoomStatus', required: true }, // เชื่อมกับ RoomStatus
     roomImage: [{ type: String }],
     id_facilityList: { type: mongoose.Schema.Types.ObjectId, ref: 'FacilityList' }, // เชื่อมกับ FacilityList
+    amount: { type: Number, required: true },
   }, { 
     timestamps: true,
     collection: 'Room'

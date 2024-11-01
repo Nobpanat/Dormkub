@@ -22,9 +22,11 @@ function sanitizeRoomData(data) {
     totalPrice: parseFloat(data.totalPrice),
     roomImage: data.roomImage ? data.roomImage.map(img => xss(img)) : [],
     facilities: data.facilities.map(facility => xss(facility)),
+    amount: validator.escape(data.amount.toString()),
   };
 }
 
+// create room
 // create room
 exports.createRoom = async (req, res) => {
   const userId = req.userId; // มาจาก verifyJWT
@@ -41,6 +43,7 @@ exports.createRoom = async (req, res) => {
       totalPrice,
       roomImage,
       facilities,
+      amount,
     } = sanitizeRoomData(req.body);
 
     // Check if numeric values are valid
@@ -81,11 +84,16 @@ exports.createRoom = async (req, res) => {
       roomStatus,
       roomImage,
       id_facilityList: facilityList._id,
+      amount,
     });
 
     facilityList.roomId = room._id;
     await facilityList.save();
     await room.save();
+
+    // Add room ID to dormitory's rooms array and save dormitory
+    dormitory.rooms.push(room._id);
+    await dormitory.save();
 
     res.status(201).json({ message: "Room created successfully", room, facilityList });
   } catch (err) {
@@ -93,6 +101,7 @@ exports.createRoom = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // update room
 exports.updateRoom = async (req, res) => {

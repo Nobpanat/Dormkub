@@ -7,6 +7,7 @@ const dormitorySchema = new mongoose.Schema({
   description: { type: String },
   address: { type: String, required: true },
   dormitoryImage: [{ type: String }], 
+  rooms : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dormitory' }],
 }, {
    timestamps: true,
    collection: 'Dormitory'

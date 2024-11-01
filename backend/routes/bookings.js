@@ -16,6 +16,10 @@ router.get('/', verifyJWT, bookingController.getAllBooking);
 // DELETE /api/booking/:id ลบการจอง
 router.delete('/:bookingId', verifyJWT, bookingController.deleteBooking);
 
+// POST /api/bookings/pay ชำระเงิน
+router.post('/payment/payAll', verifyJWT, bookingController.payAllBookings);
 
+// GET /api/bookings/history ดึงประวัติการจอง
+router.get('/history', verifyJWT, bookingController.getBookingHistory);
 
 module.exports = router;

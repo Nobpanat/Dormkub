@@ -119,6 +119,8 @@ app.use("/api/rooms", roomRoutes);
 const facilityRoutes = require("./routes/facilities");
 app.use("/api/facilities", facilityRoutes);
 
+
+
 // Start Server
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)

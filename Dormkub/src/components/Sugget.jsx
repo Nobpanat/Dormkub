@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import ContractItem from "./ContractItem";
 
-function DormItem({ imgSrc, dormName, address, price, specialText }) {
+function DormItem({ imgSrc, dormName, address, price, specialText , roomType }) {
   return (
     <div className="border border-gray-300 rounded-lg shadow-md p-4 mb-6 bg-white flex flex-col lg:flex-row">
       {/* Image Section */}
@@ -23,6 +23,7 @@ function DormItem({ imgSrc, dormName, address, price, specialText }) {
         <p className="text-lg font-bold">{dormName}</p>
         <p className="text-gray-600">{address}</p>
         <p className="text-gray-800 font-medium">{price}บาท ต่อเดือน</p>
+        <p className="text-gray-600">ประเภทห้องพัก {roomType}</p>
       </div>
     </div>
   );
@@ -133,6 +134,7 @@ const Suggest = () => {
                 specialText={
                   room.roomStatus === "active" ? "ขายสัญญาหอพัก" : ""
                 }
+                roomType={room.roomtype}
               />
             </Link>
           ))}

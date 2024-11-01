@@ -27,4 +27,7 @@ router.delete('/:id',verifyJWT, dormitoryController.deleteDormitory);
 // POST /api/dorm/search: ค้นหาหอพัก
 router.get('/dorm/search', dormitoryController.searchDormitories);
 
+// GET /api/dormitories/dormitory/getAllDormitoriesOfUser: ดึงรายการหอพักทั้งหมดของผู้ใช้
+router.get('/dorm/getAllDormitoriesOfUser', verifyJWT, dormitoryController.getAllDormitoriesOfUser);
+
 module.exports = router;

@@ -62,7 +62,7 @@ const BookingList = () => {
 
   const handlePayAll = () => {
     if (bookingListId) {
-      navigate(`/checkout/${bookingListId}`, { state: { totalPrice } });
+      navigate(`/payment/${bookingListId}`, { state: { totalPrice } });
     } else {
       alert("ไม่พบรายการการจองสำหรับชำระเงิน");
     }

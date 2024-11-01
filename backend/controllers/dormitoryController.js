@@ -210,3 +210,22 @@ exports.searchDormitories = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// get all dormitory of user and show room
+exports.getAllDormitoriesOfUser = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const dormitories = await Dormitory.find({ id_owner_Dormitory: userId })
+    .populate({
+      path: "rooms",
+      model: "Room",
+
+    });
+    // console.log("dormitories", dormitories);
+    res.status(200).json(dormitories);
+  } catch (error) {
+    // console.log("error is", error);
+    res.status(500).json({ message: error.message });
+  }
+};

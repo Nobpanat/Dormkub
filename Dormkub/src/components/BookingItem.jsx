@@ -10,8 +10,14 @@ const BookingItem = ({ booking, onSelect, onPay, onDelete, isSelected, isRoom, i
     
     // ดึงข้อมูลจาก id_contract ถ้ามี
     const contractData = id_contract || {};
-    const { DormitoryName, roomType, startDate, endDate, rent: rentContract,deposit: depositContract, address: contractAddress, roomImage: contractImages = [] } = contractData;
+    const { DormitoryName, roomType, startDate, endDate, rent: rentContract, deposit: depositContract, address: contractAddress, roomImage: contractImages = [] } = contractData;
     const { status: contractStatusLabel } = (contractData.contractStatus || {});
+
+    // ฟังก์ชันสำหรับ format วันที่เป็นแบบไทย
+    const formatDateThai = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('th-TH', options);
+    };
     
     return (
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -42,7 +48,7 @@ const BookingItem = ({ booking, onSelect, onPay, onDelete, isSelected, isRoom, i
                         <p className="text-sm mt-1">ประเภทห้องพัก: {roomType}</p>
                         <p className="text-sm">ราคาเช่า: {rentContract} บาท</p>
                         <p className="text-sm">ค่ามัดจำ: {depositContract} บาท</p>
-                        <p className="text-sm">ระยะเวลาสัญญา: {new Date(startDate).toLocaleDateString()} - {new Date(endDate).toLocaleDateString()}</p>
+                        <p className="text-sm">ระยะเวลาสัญญา: {formatDateThai(startDate)} - {formatDateThai(endDate)}</p>
                     </>
                 )}
                 <div className="flex justify-between items-center mt-4">
