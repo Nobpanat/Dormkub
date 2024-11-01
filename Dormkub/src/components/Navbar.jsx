@@ -111,22 +111,21 @@ const Navbar = () => {
   
 
   return (
-    <nav className="bg-[#03045E] p-4">
+    <nav className="bg-[#03045E] p-2">
       <div className="container mx-auto flex flex-wrap justify-between items-center">
         {/* Logo และ Dormkub Link */}
         <div className="flex items-center space-x-2">
           {/* เพิ่ม logo */}
           <Link to="/" >
-          <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true" alt="Logo" 
-          className="w-24 h-12 lg:w-28 lg:h-16" />
-           
+            <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true" alt="Logo" 
+            className="w-20 h-10 lg:w-24 lg:h-14" />
           </Link>
         </div>
 
         {/* ลิงก์และช่องค้นหา */}
-        <div className="flex flex-wrap items-center space-y-4 lg:space-y-0 lg:space-x-6 w-full lg:w-auto mt-4 lg:mt-0">
+        <div className="flex flex-wrap items-center space-y-2 lg:space-y-0 lg:space-x-4 w-full lg:w-auto mt-2 lg:mt-0">
           {/* Input สำหรับการค้นหา */}
-          <div className="relative flex-grow lg:flex-grow-0 w-full lg:w-80 mb-4 lg:mb-0">
+          <div className="relative flex-grow lg:flex-grow-0 w-full lg:w-64 mb-2 lg:mb-0">
             <input
               type="text"
               placeholder="ค้นหาหอพัก..."
@@ -135,10 +134,10 @@ const Navbar = () => {
               onFocus={() => {
                 if (dormitories.length > 0) setShowDropdown(true);
               }}
-              className="w-full px-4 py-2 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {showDropdown && dormitories.length > 0 && (
-              <ul className="absolute top-12 left-0 w-full bg-white shadow-lg rounded-md overflow-hidden max-h-60 overflow-y-auto z-10">
+              <ul className="absolute top-10 left-0 w-full bg-white shadow-lg rounded-md overflow-hidden max-h-60 overflow-y-auto z-10">
                 {dormitories && dormitories.length > 0 ? (
                   dormitories.map((dorm) => (
                     <li
@@ -149,7 +148,7 @@ const Navbar = () => {
                       <img
                         src={dorm.roomImage[0] || "/default-dorm.png"}
                         alt={dorm.id_dormitory.name}
-                        className="w-12 h-12 object-cover rounded mr-3"
+                        className="w-10 h-10 object-cover rounded mr-2"
                       />
                       <div className="flex flex-col">
                         <span className="font-medium text-gray-900">
@@ -174,18 +173,18 @@ const Navbar = () => {
           </div>
 
           {/* ลิงก์เพิ่มเติม */}
-          <div className="flex flex-wrap justify-center lg:justify-start space-x-4">
-            <Link to="/ManageContract" className="text-white hover:text-gray-400">
+          <div className="flex flex-wrap justify-center lg:justify-start space-x-2">
+            <Link to="/ManageContract" className="text-white hover:text-gray-400 text-sm">
               ลงประกาศ
               <br /> ขายสัญญา
               <br /> จัดการสัญญา
             </Link>
-            <Link to="/ManageDormitory" className="text-white hover:text-gray-400">
+            <Link to="/ManageDormitory" className="text-white hover:text-gray-400 text-sm">
               ลงประกาศ
               <br /> หอพัก
               <br /> จัดการหอพัก
             </Link>
-            <Link to="/bookingList" className="text-white hover:text-gray-400">
+            <Link to="/bookingList" className="text-white hover:text-gray-400 text-sm">
               รายการ <br />
               จองหอพัก
             </Link>
@@ -193,19 +192,18 @@ const Navbar = () => {
 
           {/* ตรวจสอบว่ามีการล็อกอินแล้วหรือยัง */}
           {user ? (
-            
             <div className="relative flex-shrink-0 ml-auto lg:ml-0">
               <img
                 src={user.profileImage || "/default-profile.png"}
                 alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer"
+                className="w-8 h-8 rounded-full cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation(); // ป้องกันการคลิกภายนอกปิด dropdown
                   setShowProfileDropdown((prev) => !prev); // สลับสถานะ dropdown
                 }}
               />
               {showProfileDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 z-10">
                   <Link
                     to="/history"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"

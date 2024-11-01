@@ -14,7 +14,7 @@ const xss = require("xss");
 // Sanitization function
 function sanitizeRoomData(data) {
   return {
-    id_dormitory: xss(data.id_dormitory),
+    
     roomtype: xss(data.roomtype),
     size: validator.escape(data.size.toString()),
     rent: parseFloat(data.rent),
@@ -31,11 +31,12 @@ function sanitizeRoomData(data) {
 exports.createRoom = async (req, res) => {
   const userId = req.userId; // มาจาก verifyJWT
   const roomStatus = "670e13b258f0e080c662d971"; // status active
+  const { dormitoryId } = req.params;
+  const id_dormitory = dormitoryId;
 
   try {
     // Sanitize and validate input data
     const {
-      id_dormitory,
       roomtype,
       size,
       rent,

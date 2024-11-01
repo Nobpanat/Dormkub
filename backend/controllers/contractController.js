@@ -146,38 +146,12 @@ exports.getContractById = async (req, res) => {
 // GET /api/contracts
 exports.getAllContracts = async (req, res) => {
   const userId = req.userId; // มาจาก verifyJWT
-  // const role = req.userRole;  // สมมติว่ามี role ของ user มาจาก middleware เช่น ownerDormitory, tenant, หรือ previousTenant
 
   try {
-    const user = await User.findById(userId).populate("roles");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    let contracts = [];
-
-    // ดึงสัญญาของผู้เช่า (id_tenant)
-    if (user.roles.some((role) => role.code === "TENANT")) {
-      contracts = await Contract.find({ id_tenant: userId })
-        .populate("id_owner_lessor", "_id name email")
-        .populate("id_tenant", "_id name email")
-        .populate("id_room", "_id")
-        .populate("contractStatus", "_id status");
-    }
-    // ดึงสัญญาของเจ้าของหอพัก (id_owner_lessor)
-    if (user.roles.some((role) => role.code == "OWNER_DORMITORY")) {
-      contracts = await Contract.find({ id_owner_lessor: userId })
-        .populate("id_owner_lessor", "_id name email")
-        .populate("id_tenant", "_id name email")
-        .populate("id_room", "_id totalPrice")
-        .populate("contractStatus", "_id status");
-    }
-    // ดึงสัญญาของผู้เช่ารายเก่า (จาก ContractForSale collection)
-    // else if (role === 'previousTenant') {
-    //     contracts = await ContractForSale.find({ id_previous_tenant: userId })
-    //         .populate('id_previous_tenant', '_id name email')
-    //         .populate('contractStatus', '_id status');
-    // }
+    // ดึงเฉพาะสัญญาที่มี id_owner_lessor ตรงกับ userId
+    const contracts = await Contract.find({ id_owner_lessor: userId })
+      .populate("id_owner_lessor", "_id name email")
+      .populate("contractStatus", "_id status");
 
     if (!contracts || contracts.length === 0) {
       return res.status(404).json({ message: "No contracts found" });
@@ -188,6 +162,7 @@ exports.getAllContracts = async (req, res) => {
     res.status(500).json({ message: "Error fetching contracts", err });
   }
 };
+
 
 // Delete /api/contracts:id : Delete contract by id
 exports.deleteContractById = async (req, res) => {

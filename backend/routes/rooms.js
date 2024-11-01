@@ -7,7 +7,7 @@ const roomController = require('../controllers/roomController');
 const verifyJWT = require('../middleware/verifyJWT');
 
 // POST /api/rooms/ สร้างห้องใหม่ (สำหรับเจ้าของหอพัก)
-router.post('/', verifyJWT, roomController.createRoom);
+router.post('/:dormitoryId', verifyJWT, roomController.createRoom);
 
 // PUT /api/rooms/:id: แก้ไขข้อมูลห้อง (สำหรับเจ้าของหอพัก)
 router.put('/:id', verifyJWT, roomController.updateRoom);
