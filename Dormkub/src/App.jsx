@@ -8,6 +8,7 @@ import ContractDetails from './pages/ContractDetails';
 import Payment from './pages/PaymentPage';
 import HistoryPage from './pages/HistoryPage';
 import ManageDormitory from './pages/ManageDormitory';
+import ManageContract from './pages/ManageContract';
 
 function App() {
   return (
@@ -31,6 +32,9 @@ function App() {
 
         {/* Manage Dormitory */}
         <Route path="/manageDormitory" element={<ManageDormitory />} />
+
+        {/* Manage Contract */}
+        <Route path="/manageContract" element={<ManageContract />} />
 
 
         {/* Route สำหรับหน้า Login */}

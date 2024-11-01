@@ -22,7 +22,7 @@ function DormItem({ imgSrc, dormName, address, price, specialText , roomType }) 
         )}
         <p className="text-lg font-bold">{dormName}</p>
         <p className="text-gray-600">{address}</p>
-        <p className="text-gray-800 font-medium">{price}บาท ต่อเดือน</p>
+        <p className="text-gray-800 font-medium">ค่าเช่า: {price} บาท ต่อเดือน</p>
         <p className="text-gray-600">ประเภทห้องพัก {roomType}</p>
       </div>
     </div>
@@ -154,6 +154,7 @@ const Suggest = () => {
                   deposit={contract.deposit}
                   totalPrice={contract.totalPrice}
                   roomImage={contract.roomImage[0]} // สมมติว่ามีรูปภาพห้องใน array
+                  roomType={contract.roomType}
                 />
               </Link>
             ))}

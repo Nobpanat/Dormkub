@@ -9,6 +9,8 @@ const PaymentPage = () => {
   const [bookings, setBookings] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false); // เพิ่ม state สำหรับ pop-up
+  const [modalMessage, setModalMessage] = useState(''); // ข้อความใน pop-up
   const navigate = useNavigate();
 
   const fetchBookings = async () => {
@@ -40,11 +42,19 @@ const PaymentPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert("All bookings have been paid!");
-      navigate('/'); // เปลี่ยนเส้นทางไปยังหน้าแรก
+      setModalMessage("ชำระเงินสำเร็จสำหรับการจองทั้งหมด!");
+      setShowModal(true);
     } catch (err) {
       console.error("Error paying all bookings:", err);
-      alert("Failed to pay all bookings.");
+      setModalMessage("ไม่สามารถชำระเงินสำหรับการจองทั้งหมดได้");
+      setShowModal(true);
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    if (modalMessage === "ชำระเงินสำเร็จสำหรับการจองทั้งหมด!") {
+      navigate('/'); // เปลี่ยนเส้นทางไปยังหน้าแรกหลังจากการชำระเงินสำเร็จ
     }
   };
 
@@ -80,6 +90,22 @@ const PaymentPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal Component */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-8 shadow-lg max-w-sm mx-auto text-center">
+            <h2 className="text-xl font-semibold mb-4">{modalMessage}</h2>
+            <button
+              onClick={closeModal}
+              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              ปิด
+            </button>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );

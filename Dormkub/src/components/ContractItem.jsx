@@ -1,7 +1,7 @@
 // src/components/ContractItem.jsx
 import React from 'react';
 
-function ContractItem({ dormitoryName, address,description, startDate, endDate, rent, deposit, totalPrice, roomImage }) {
+function ContractItem({ dormitoryName, address,description, startDate, endDate, rent, deposit, totalPrice, roomImage ,roomType }) {
     const formatDateThai = (date) => {
         return new Date(date).toLocaleDateString('th-TH', {
           day: 'numeric',
@@ -22,13 +22,15 @@ function ContractItem({ dormitoryName, address,description, startDate, endDate, 
       {/* Text Section */}
       <div className="flex flex-col justify-center">
         <p className="text-lg font-bold">{dormitoryName}</p>
+        <p className="text-base font-bold">สัญญาหอพัก</p>
         <p className="text-gray-600">{address}</p>
-        <p className="text-gray-600">{description}</p>
+        {/* <p className="text-gray-600">{description}</p> */}
         <p className="text-gray-600">วันเริ่มสัญญา: {formatDateThai(startDate)}</p>
         <p className="text-gray-600">วันหมดสัญญา: {formatDateThai(endDate)}</p>
-        <p className="text-gray-800 font-medium">ค่าเช่า: {rent} บาท/เดือน</p>
-        <p className="text-gray-800 font-medium">เงินมัดจำ: {deposit} บาท</p>
-        <p className="text-gray-800 font-medium">รวมทั้งหมด: {totalPrice} บาท</p>
+        <p className="text-gray-800 font-medium">ค่าเช่า: {rent} บาท ต่อเดือน</p>
+        <p className="text-gray-600">ประเภทห้องพัก {roomType}</p>
+        {/* <p className="text-gray-800 font-medium">เงินมัดจำ: {deposit} บาท</p> */}
+        {/* <p className="text-gray-800 font-medium">รวมทั้งหมด: {totalPrice} บาท</p> */}
       </div>
     </div>
   );

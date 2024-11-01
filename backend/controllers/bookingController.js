@@ -141,6 +141,7 @@ exports.getAllBooking = async (req, res) => {
 exports.deleteBooking = async (req, res) => {
     const { bookingId } = req.params;
     const userId = req.userId; // From verifyJWT
+    const statusId = "670e11817028eb47b304eead"; // Active status
 
     try {
         // Validate bookingId
@@ -149,7 +150,7 @@ exports.deleteBooking = async (req, res) => {
         }
 
         // Find user's booking list
-        const bookingList = await BookingList.findOne({ user: userId });
+        const bookingList = await BookingList.findOne({ user: userId, bookingListStatus: statusId });
         if (!bookingList) {
             return res.status(404).json({ message: 'Booking list not found' });
         }
@@ -170,7 +171,7 @@ exports.deleteBooking = async (req, res) => {
         await bookingList.save();
         await booking.deleteOne();
 
-        res.status(200).json({ message: 'Booking deleted successfully' });
+        res.status(200).json({ message: 'ลบการจองสำเร็จ' });
     } catch (err) {
         console.error('Error deleting booking:', err);
         res.status(500).json({ message: 'Internal server error while deleting booking' });
