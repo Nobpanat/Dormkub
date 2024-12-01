@@ -60,6 +60,7 @@ const Navbar = () => {
           }
         );
         setUser(response.data);
+        console.log("User profile:", response.data);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -194,7 +195,7 @@ const Navbar = () => {
           {user ? (
             <div className="relative flex-shrink-0 ml-auto lg:ml-0">
               <img
-                src={user.profileImage || "/default-profile.png"}
+                src={`/api/proxy-image?url=${encodeURIComponent(user.profileImage)}`}
                 alt="Profile"
                 className="w-8 h-8 rounded-full cursor-pointer"
                 onClick={(e) => {
