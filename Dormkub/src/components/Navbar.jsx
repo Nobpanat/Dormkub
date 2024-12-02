@@ -3,6 +3,9 @@ import axios from "axios";
 import debounce from "lodash.debounce";
 import { Link, useNavigate } from "react-router-dom"; // ใช้สำหรับการนำทาง
 
+// import img logo
+import logo from "../assets/images/Frame 84@2x.png";
+
 const Navbar = () => {
   const [query, setQuery] = useState("");
   const [dormitories, setDormitories] = useState([]);
@@ -118,7 +121,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-2">
           {/* เพิ่ม logo */}
           <Link to="/" >
-            <img src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true" alt="Logo" 
+            <img src={logo} alt="Logo" 
             className="w-20 h-10 lg:w-24 lg:h-14" />
           </Link>
         </div>

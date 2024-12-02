@@ -1,9 +1,12 @@
+import logo from "../assets/images/Frame 84@2x.png";
+
+
 const Bandner = () => {
   return (
     <section className="text-left mb-2 p-4 pl-20 pb-10 bg-white shadow-md border-b-4 border-[#03045E]">
       <div className="flex items-center space-x-2">
         <img
-          src="https://github.com/Nobpanat/Dormkub/blob/main/DormkubImg/Frame%2084@2x.png?raw=true"
+          src={logo}
           alt="Dormkub Logo"
           className="w-24 h-16 lg:w-28 lg:h-20"
         />
