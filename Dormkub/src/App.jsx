@@ -1,22 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from './pages/Login';
-import Home from './pages/Home';
-import RoomDetails from './pages/RoomDetails';
-import BookingList from './pages/BookingList';
-import ContractDetails from './pages/ContractDetails';
-import Payment from './pages/PaymentPage';
-import HistoryPage from './pages/HistoryPage';
-import ManageDormitory from './pages/ManageDormitory';
-import ManageContract from './pages/ManageContract';
-import AddDormitory from './pages/AddDormitory';
-import AddRoom from './pages/AddRoom';
-import AddContract from './pages/AddContract';
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import RoomDetails from "./pages/RoomDetails";
+import BookingList from "./pages/BookingList";
+import ContractDetails from "./pages/ContractDetails";
+import Payment from "./pages/PaymentPage";
+import HistoryPage from "./pages/HistoryPage";
+import ManageDormitory from "./pages/ManageDormitory";
+import ManageContract from "./pages/ManageContract";
+import AddDormitory from "./pages/AddDormitory";
+import AddRoom from "./pages/AddRoom";
+import AddContract from "./pages/AddContract";
+import UpdateDormitory from "./pages/UpdateDormitory";
 
 function App() {
   return (
     <Router>
-      
       <Routes>
         {/* Route สำหรับหน้าแรก */}
         <Route path="/" element={<Home />} />
@@ -37,7 +37,7 @@ function App() {
         <Route path="/manageDormitory" element={<ManageDormitory />} />
 
         {/* Add Dormitory */}
-        <Route path="/addDormitory" element={<AddDormitory />} /> 
+        <Route path="/addDormitory" element={<AddDormitory />} />
 
         {/* Add Room */}
         <Route path="/add-room/:dormitoryId" element={<AddRoom />} />
@@ -48,15 +48,14 @@ function App() {
         {/* Manage Contract */}
         <Route path="/manageContract" element={<ManageContract />} />
 
-
-
         {/* Route สำหรับหน้า Login */}
         <Route path="/login" element={<Login />} />
 
-
-
         {/* Route for BookingList page */}
         <Route path="/bookinglist" element={<BookingList />} />
+
+        {/* Route for UpdateDormitory page */}
+        <Route path="/update-dormitory/:id" element={<UpdateDormitory />} />
       </Routes>
     </Router>
   );

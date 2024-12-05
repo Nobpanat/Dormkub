@@ -63,7 +63,7 @@ const Navbar = () => {
           }
         );
         setUser(response.data);
-        console.log("User profile:", response.data);
+        
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -98,7 +98,7 @@ const Navbar = () => {
     axios
       .post("http://localhost:5000/auth/logout", {}, { withCredentials: true })
       .then((response) => {
-        console.log("Logout response:", response.data.filteredRooms);
+        // console.log("Logout response:", response.data.filteredRooms);
         setUser(null);
         navigate("/"); // นำทางไปหน้าแรก
       })

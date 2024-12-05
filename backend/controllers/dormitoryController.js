@@ -61,50 +61,94 @@ exports.createDormitory = async (req, res) => {
     }
 };
 
+
+
 // update dormitory
 exports.updateDormitory = async (req, res) => {
-    const userId = req.userId;
-    const { name, description, address, dormitoryImage } = req.body;
-    const dormitoryId = req.params.id;
+  const userId = req.userId;
+  const { name, description, address, dormitoryImage, rooms } = req.body;
+  const dormitoryId = req.params.id;
 
-    // sanitize input เพื่อป้องกัน XSS
-    const sanitizedData = {
-        name: xss(String(name)),
-        description: xss(String(description)),
-        address: xss(String(address)),
-        dormitoryImage: Array.isArray(dormitoryImage)
-            ? dormitoryImage.map(img => xss(String(img)))
-            : xss(String(dormitoryImage)),
-    };
+  // Sanitize input เพื่อป้องกัน XSS
+  const sanitizedData = {
+    name: xss(String(name)),
+    description: xss(String(description)),
+    address: xss(String(address)),
+    dormitoryImage: Array.isArray(dormitoryImage)
+      ? dormitoryImage.map(img => xss(String(img)))
+      : [xss(String(dormitoryImage))],
+  };
 
-    // validate dormitoryId และ userId
-    if (!validator.isMongoId(userId) || !validator.isMongoId(dormitoryId)) {
-        return res.status(400).json({ message: "Invalid dormitory or user ID" });
+  // Validate dormitoryId และ userId
+  if (!validator.isMongoId(userId) || !validator.isMongoId(dormitoryId)) {
+    return res.status(400).json({ message: 'Invalid dormitory or user ID' });
+  }
+
+  try {
+    // Find dormitory พร้อม populate rooms
+    const dormitory = await Dormitory.findById(dormitoryId).populate({
+      path: 'rooms',
+      model: 'Room',
+    });
+
+    if (!dormitory) {
+      return res.status(404).json({ message: 'Dormitory not found' });
     }
 
-    try {
-        const dormitory = await Dormitory.findById(dormitoryId);
-        if (!dormitory) {
-            return res.status(404).json({ message: "Dormitory not found" });
-        }
-
-        // ตรวจสอบเจ้าของหอพัก
-        if (dormitory.id_owner_Dormitory.toString() !== userId) {
-            return res.status(403).json({ message: "You are not the owner of this dormitory" });
-        }
-
-        // update dormitory
-        dormitory.name = sanitizedData.name || dormitory.name;
-        dormitory.description = sanitizedData.description || dormitory.description;
-        dormitory.address = sanitizedData.address || dormitory.address;
-        dormitory.dormitoryImage = sanitizedData.dormitoryImage || dormitory.dormitoryImage;
-
-        await dormitory.save();
-        res.status(200).json({ message: "Dormitory updated successfully", dormitory });
-    } catch (err) {
-        res.status(500).json({ message: "Error updating dormitory", err: err.message });
+    // ตรวจสอบเจ้าของหอพัก
+    if (dormitory.id_owner_Dormitory.toString() !== userId) {
+      return res.status(403).json({ message: 'You are not the owner of this dormitory' });
     }
+
+    // Update dormitory fields
+    dormitory.name = sanitizedData.name || dormitory.name;
+    dormitory.description = sanitizedData.description || dormitory.description;
+    dormitory.address = sanitizedData.address || dormitory.address;
+    dormitory.dormitoryImage = sanitizedData.dormitoryImage || dormitory.dormitoryImage;
+
+    // Update rooms (รองรับ rooms เป็น Object หรือ Array)
+    if (rooms && typeof rooms === 'object') {
+      const roomsArray = Array.isArray(rooms) ? rooms : Object.values(rooms);
+
+      for (const roomData of roomsArray) {
+        if (roomData._id && validator.isMongoId(String(roomData._id))) {
+          const existingRoom = dormitory.rooms.find(
+            (room) => String(room._id) === String(roomData._id)
+          );
+
+          if (existingRoom) {
+            // Update existing room
+            existingRoom.amount = roomData.amount || existingRoom.amount;
+            await Room.findByIdAndUpdate(
+              roomData._id,
+              { $set: { amount: existingRoom.amount } },
+              { new: true }
+            );
+          } else {
+            console.log(`Room with ID ${roomData._id} not found in this dormitory.`);
+          }
+        } else {
+          console.log(`Invalid room ID provided: ${roomData._id}`);
+        }
+      }
+    }
+
+    // Save updated dormitory
+    await dormitory.save();
+
+    res.status(200).json({
+      message: 'Dormitory updated successfully',
+      dormitory,
+    });
+  } catch (err) {
+    console.error('Error updating dormitory:', err);
+    res.status(500).json({
+      message: 'Error updating dormitory',
+      error: err.message,
+    });
+  }
 };
+
 
 
 // delete dormitory
@@ -126,10 +170,13 @@ exports.deleteDormitory = async (req, res) => {
         .json({ message: "You are not the owner of this dormitory" });
     }
 
+    // Delete all rooms associated with the dormitory
+    await Room.deleteMany({ id_dormitory: dormitoryId });
+
     await dormitory.deleteOne();
-    res.status(200).json({ message: "Dormitory deleted successfully" });
+    res.status(200).json({ message: "Dormitory and associated rooms deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Error deleting dormitory", err });
+    res.status(500).json({ message: "Error deleting dormitory and rooms", err });
   }
 };
 
@@ -146,7 +193,10 @@ exports.getAllDormitories = async (req, res) => {
 // get dormitory by id
 exports.getDormitoryById = async (req, res) => {
   try {
-    const dormitory = await Dormitory.findById(req.params.id);
+    const dormitory = await Dormitory.findById(req.params.id).populate({
+      path: 'rooms',
+      model: 'Room',
+    });
     if (!dormitory) {
       return res.status(404).json({ message: "Dormitory not found" });
     }

@@ -116,7 +116,7 @@ app.use("/api/facilities", facilityRoutes);
 
 app.get('/api/proxy-image', async (req, res) => {
   const imageUrl = req.query.url;
-  console.log('imageUrl:', imageUrl);
+  // console.log('imageUrl:', imageUrl);
 
   try {
     const response = await fetch(imageUrl, {
@@ -126,7 +126,7 @@ app.get('/api/proxy-image', async (req, res) => {
       },
     });
 
-    console.log('Response status:', response.status);
+    // console.log('Response status:', response.status);
 
     // ดึง Headers ทั้งหมดในรูปแบบ JSON
     response.headers.forEach((value, key) => {
