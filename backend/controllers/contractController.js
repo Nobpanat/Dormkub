@@ -9,21 +9,22 @@ const FacilityList = require("../models/FacilityList");
 const validator = require("validator");
 const xss = require("xss");
 
+
 function sanitizeContractData(data) {
   return {
-    startDate: validator.toDate(data.startDate),
-    endDate: validator.toDate(data.endDate),
-    fileContract: xss(data.file_contract),
-    description: xss(data.description),
-    roomImage: data.roomImage.map((img) => xss(img)),
-    dormitoryName: xss(data.DormitoryName),
-    rent: parseFloat(data.rent),
-    deposit: parseFloat(data.deposit),
-    totalPrice: parseFloat(data.totalPrice),
-    address: xss(data.address),
-    facilities: data.facilities.map((facility) => validator.escape(facility)),
-    roomType: xss(data.roomType),
-    size: parseFloat(data.size),
+    startDate: data.startDate ? validator.toDate(data.startDate) : null,
+    endDate: data.endDate ? validator.toDate(data.endDate) : null,
+    fileContract: data.file_contract ? xss(data.file_contract) : "",
+    description: data.description ? xss(data.description) : "",
+    roomImage: Array.isArray(data.roomImage) ? data.roomImage.map((img) => xss(img)) : [],
+    dormitoryName: data.DormitoryName ? xss(data.DormitoryName) : "",
+    rent: data.rent ? parseFloat(data.rent) : 0,
+    deposit: data.deposit ? parseFloat(data.deposit) : 0,
+    totalPrice: data.totalPrice ? parseFloat(data.totalPrice) : 0,
+    address: data.address ? xss(data.address) : "",
+    facilities: Array.isArray(data.facilities) ? data.facilities.map((facility) => validator.escape(facility)) : [],
+    roomType: data.roomType ? xss(data.roomType) : "",
+    size: data.size ? parseFloat(data.size) : 0,
   };
 }
 
@@ -199,5 +200,78 @@ exports.getAllContract = async (req, res) => {
     res.status(200).json(filteredContracts);
   } catch (err) {
     res.status(500).json({ message: "Error fetching contract data", err });
+  }
+};
+
+
+// PUT /api/contracts/:id : Update contract by id
+exports.updateContract = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  try {
+    // Clean and validate input data
+    const {
+      startDate,
+      endDate,
+      fileContract,
+      description,
+      roomImage,
+      dormitoryName,
+      rent,
+      deposit,
+      totalPrice,
+      address,
+      facilities,
+      roomType,
+      size,
+    } = sanitizeContractData(req.body);
+
+    // Check numeric values
+    if (isNaN(rent) || isNaN(deposit) || isNaN(totalPrice)) {
+      return res.status(400).json({
+        message: "Invalid numeric values for rent, deposit, or totalPrice",
+      });
+    }
+
+    const contract = await Contract.findById(id);
+    if (!contract) {
+      return res.status(404).json({ message: "Contract not found" });
+    }
+
+    if (contract.id_owner_lessor.toString() !== userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Check facilities
+    for (const facilityId of facilities) {
+      const facility = await Facility.findById(facilityId);
+      if (!facility) {
+        return res.status(404).json({ message: "Facility not found" });
+      }
+    }
+
+    const facilityList = await FacilityList.findById(contract.id_facilityList);
+    facilityList.facilities = facilities;
+    await facilityList.save();
+
+    contract.startDate = startDate;
+    contract.endDate = endDate;
+    contract.file_contract = fileContract;
+    contract.description = description;
+    contract.roomImage = roomImage;
+    contract.DormitoryName = dormitoryName;
+    contract.rent = rent;
+    contract.deposit = deposit;
+    contract.totalPrice = totalPrice;
+    contract.address = address;
+    contract.roomType = roomType;
+    contract.size = size;
+
+    await contract.save();
+    res.status(200).json({ message: "Contract updated successfully", contract });
+  } catch (err) {
+    console.error("Error updating contract:", err);
+    res.status(500).json({ message: "Error updating contract", err });
   }
 };

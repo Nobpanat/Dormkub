@@ -21,6 +21,7 @@ const ManageDormitory = () => {
             },
           }
         );
+        console.log("data ", response.data);
         setDormitories(response.data);
       } catch (error) {
         console.error("Error fetching dormitories:", error);

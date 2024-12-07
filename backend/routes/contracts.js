@@ -17,6 +17,9 @@ router.get('/:id' ,contractController.getContractById);
 // GET /api/contracts/ : ดึงรายการสัญญาทั้งหมดสำหรับเจ้าของหอพัก
 router.get('/getAll/contract', verifyJWT, contractController.getAllContracts);
 
+// PUT /api/contracts/:id: อัปเดตข้อมูลสัญญา
+router.put('/:id', verifyJWT, contractController.updateContract);
+
 
 
 // // PUT /api/contracts/:id: อัปเดตข้อมูลสัญญา

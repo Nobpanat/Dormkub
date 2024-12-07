@@ -1,4 +1,3 @@
-// FacilitiesCheckbox.js
 import { useState } from "react";
 
 const FacilitiesCheckbox = ({ selectedFacilities, onFacilitiesChange }) => {

@@ -2,10 +2,13 @@
 const Dormitory = require("../models/Dormitory");
 const User = require("../models/User");
 const Room = require("../models/Room");
+const FacilityList = require("../models/FacilityList");
 
 const xss = require("xss");
 const mongoose = require("mongoose");
 const validator = require("validator");
+
+
 
 // create dormitory
 exports.createDormitory = async (req, res) => {
@@ -64,11 +67,16 @@ exports.createDormitory = async (req, res) => {
 
 
 // update dormitory
+// update dormitory
+// update dormitory
 exports.updateDormitory = async (req, res) => {
   const userId = req.userId;
   const { name, description, address, dormitoryImage, rooms } = req.body;
   const dormitoryId = req.params.id;
+  console.log("req.body ", req.body);
+  console.log("room facilities ", rooms[0].id_facilityList.facilities);
 
+  
   // Sanitize input เพื่อป้องกัน XSS
   const sanitizedData = {
     name: xss(String(name)),
@@ -89,6 +97,10 @@ exports.updateDormitory = async (req, res) => {
     const dormitory = await Dormitory.findById(dormitoryId).populate({
       path: 'rooms',
       model: 'Room',
+      populate: {
+        path: 'id_facilityList',
+        model: 'FacilityList',
+      }
     });
 
     if (!dormitory) {
@@ -119,9 +131,20 @@ exports.updateDormitory = async (req, res) => {
           if (existingRoom) {
             // Update existing room
             existingRoom.amount = roomData.amount || existingRoom.amount;
+            console.log("facilities room 222" , roomData.id_facilityList.facilities);
+
+            // Update facilities
+            const facilityList = await FacilityList.findById(existingRoom.id_facilityList);
+            if (facilityList) {
+              facilityList.facilities = roomData.id_facilityList.facilities || facilityList.facilities;
+              console.log("facilityList.facilities ", facilityList.facilities);
+              console.log("roomData.facilities ", roomData.id_facilityList.facilities);
+              await facilityList.save();
+            }
+
             await Room.findByIdAndUpdate(
               roomData._id,
-              { $set: { amount: existingRoom.amount } },
+              { $set: { amount: existingRoom.amount, id_facilityList: facilityList._id } },
               { new: true }
             );
           } else {
@@ -147,6 +170,7 @@ exports.updateDormitory = async (req, res) => {
       error: err.message,
     });
   }
+  
 };
 
 
@@ -196,6 +220,10 @@ exports.getDormitoryById = async (req, res) => {
     const dormitory = await Dormitory.findById(req.params.id).populate({
       path: 'rooms',
       model: 'Room',
+      populate: {
+        path: 'id_facilityList',
+        model: 'FacilityList',
+      }
     });
     if (!dormitory) {
       return res.status(404).json({ message: "Dormitory not found" });
@@ -270,7 +298,10 @@ exports.getAllDormitoriesOfUser = async (req, res) => {
     .populate({
       path: "rooms",
       model: "Room",
-
+      populate: {
+      path: "id_facilityList",
+      model: "FacilityList",
+      },
     });
     // console.log("dormitories", dormitories);
     res.status(200).json(dormitories);

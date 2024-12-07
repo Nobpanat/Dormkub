@@ -13,6 +13,7 @@ import AddDormitory from "./pages/AddDormitory";
 import AddRoom from "./pages/AddRoom";
 import AddContract from "./pages/AddContract";
 import UpdateDormitory from "./pages/UpdateDormitory";
+import UpdateContract from "./pages/UpdateContract";
 
 function App() {
   return (
@@ -56,6 +57,9 @@ function App() {
 
         {/* Route for UpdateDormitory page */}
         <Route path="/update-dormitory/:id" element={<UpdateDormitory />} />
+
+        {/* Route for UpdateContract page */}
+        <Route path="/update-contract/:id" element={<UpdateContract />} />
       </Routes>
     </Router>
   );
