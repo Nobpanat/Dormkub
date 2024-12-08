@@ -167,19 +167,32 @@ exports.getAllContracts = async (req, res) => {
 
 // Delete /api/contracts:id : Delete contract by id
 exports.deleteContractById = async (req, res) => {
+  const userId = req.userId; // มาจาก verifyJWT
   const contractId = req.params.id;
 
   try {
     const contract = await Contract.findById(contractId);
-    console.log("contract", contract);
+
     if (!contract) {
       return res.status(404).json({ message: "Contract not found" });
     }
 
-    await Contract.findByIdAndDelete(contractId);
-    res.status(200).json({ message: "Contract deleted successfully" });
+    // ตรวจสอบว่า user เป็นเจ้าของ contract หรือไม่
+    if (contract.id_owner_lessor.toString() !== userId) {
+      return res.status(403).json({ message: "You are not the owner of this contract" });
+    }
+
+    // ลบข้อมูลที่เกี่ยวข้องกับ contract เช่น Room หรือ FacilityList (ถ้ามี)
+    const facilityList = await FacilityList.findById(contract.id_facilityList);
+    if (facilityList) {
+      await facilityList.deleteOne();
+    }
+
+    // ลบ contract
+    await contract.deleteOne();
+    res.status(200).json({ message: "Contract and associated rooms deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Error deleting contract", err });
+    res.status(500).json({ message: "Error deleting contract and rooms", err });
   }
 };
 

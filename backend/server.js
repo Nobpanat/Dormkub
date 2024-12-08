@@ -36,7 +36,7 @@ app.use(passport.session());
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", // ระบุ URL ของ frontend
+    origin: "http://localhost:5173", // ระบุ URL ของ frontend "http://localhost:5173"
     credentials: true, // อนุญาตให้ส่งข้อมูลคุกกี้หรือ session
     // allowedHeaders: ["Content-Type", "Authorization"],
     // exposedHeaders:["Content-Security-Policy"],

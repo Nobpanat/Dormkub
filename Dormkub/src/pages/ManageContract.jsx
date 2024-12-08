@@ -3,11 +3,13 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import ConfirmDelete from "../components/ConfirmDelete";
 
 const ManageContract = () => {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   useEffect(() => {
     const fetchContracts = async () => {
       try {
@@ -27,6 +29,30 @@ const ManageContract = () => {
     };
     fetchContracts();
   }, []);
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`/api/contracts/${selectedItem}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setContracts(contracts.filter((c) => c._id !== selectedItem));
+      // alert("Dormitory deleted successfully");
+    } catch (error) {
+      console.error("Error deleting dormitory:", error);
+      // alert("Failed to delete dormitory");
+    } finally {
+      setShowConfirmModal(false); // Close confirmation modal
+      setSelectedItem(null);
+    }
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    setSelectedItem(itemId);
+    setShowConfirmModal(true); // Show confirmation modal before deleting
+  };
 
   return (
     <>
@@ -89,9 +115,11 @@ const ManageContract = () => {
                         แก้ไข
                       </button>
                     </Link>
-                    <button className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600">
-                      ลบ
-                    </button>
+                      <button className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600"
+                        onClick={() => handleDeleteItem(contract._id)}
+                      >     
+                        ลบสัญญาหอพัก
+                      </button>
                   </div>
                 </div>
               ))}
@@ -100,6 +128,13 @@ const ManageContract = () => {
         </div>
         <Footer />
       </div>
+      {showConfirmModal && (
+        <ConfirmDelete
+          message="คุณแน่ใจว่าต้องการลบสัญญาหอพักนี้?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </>
   );
 };

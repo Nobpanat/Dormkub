@@ -20,6 +20,9 @@ router.get('/getAll/contract', verifyJWT, contractController.getAllContracts);
 // PUT /api/contracts/:id: อัปเดตข้อมูลสัญญา
 router.put('/:id', verifyJWT, contractController.updateContract);
 
+// DELETE /api/contracts/:id: ลบสัญญา
+router.delete('/:id', verifyJWT, contractController.deleteContractById);
+
 
 
 // // PUT /api/contracts/:id: อัปเดตข้อมูลสัญญา

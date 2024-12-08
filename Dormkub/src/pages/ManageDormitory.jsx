@@ -3,11 +3,14 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import DormitoryList from "../components/DormitoryList";
+import ConfirmDelete from "../components/ConfirmDelete";
 import { Link } from "react-router-dom";
 
 const ManageDormitory = () => {
   const [dormitories, setDormitories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const fetchDormitories = async () => {
@@ -21,7 +24,6 @@ const ManageDormitory = () => {
             },
           }
         );
-        console.log("data ", response.data);
         setDormitories(response.data);
       } catch (error) {
         console.error("Error fetching dormitories:", error);
@@ -32,22 +34,28 @@ const ManageDormitory = () => {
     fetchDormitories();
   }, []);
 
-  const handleDelete = async (dormitoryId) => {
-    if (window.confirm("Are you sure you want to delete this dormitory?")) {
-      try {
-        const token = localStorage.getItem("token");
-        await axios.delete(`/api/dormitories/${dormitoryId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setDormitories(dormitories.filter(d => d._id !== dormitoryId));
-        alert("Dormitory deleted successfully");
-      } catch (error) {
-        console.error("Error deleting dormitory:", error);
-        alert("Failed to delete dormitory");
-      }
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`/api/dormitories/${selectedItem}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDormitories(dormitories.filter((d) => d._id !== selectedItem));
+      // alert("Dormitory deleted successfully");
+    } catch (error) {
+      console.error("Error deleting dormitory:", error);
+      // alert("Failed to delete dormitory");
+    }finally {
+      setShowConfirmModal(false); // Close confirmation modal
+      setSelectedItem(null);
     }
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    setSelectedItem(itemId);
+    setShowConfirmModal(true); // Show confirmation modal before deleting
   };
 
   return (
@@ -70,11 +78,21 @@ const ManageDormitory = () => {
               <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
             </div>
           ) : (
-            <DormitoryList dormitories={dormitories} onDelete={handleDelete} />
+            <DormitoryList
+              dormitories={dormitories}
+              onDelete={handleDeleteItem}
+            />
           )}
         </div>
         <Footer />
       </div>
+      {showConfirmModal && (
+        <ConfirmDelete
+          message="คุณแน่ใจว่าต้องการลบหอพักนี้?"
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirmModal(false)}
+        />
+      )}
     </>
   );
 };

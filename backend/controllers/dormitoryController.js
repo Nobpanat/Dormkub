@@ -196,6 +196,10 @@ exports.deleteDormitory = async (req, res) => {
 
     // Delete all rooms associated with the dormitory
     await Room.deleteMany({ id_dormitory: dormitoryId });
+    // Delete facilityList associated with the room for each room
+    
+    await FacilityList.deleteMany({ roomId: { $in: dormitory.rooms.map(room => room._id) } });
+
 
     await dormitory.deleteOne();
     res.status(200).json({ message: "Dormitory and associated rooms deleted successfully" });

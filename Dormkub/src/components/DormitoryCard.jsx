@@ -21,7 +21,7 @@ const DormitoryCard = ({ dormitory, onDelete }) => {
       <div className="flex justify-between mt-4">
         <Link to={`/update-dormitory/${dormitory._id}`}>
           <button className="bg-yellow-500 text-white font-bold py-2 px-4 rounded hover:bg-yellow-600">
-            อัปเดตหอพัก
+            แก้ไข
           </button>
         </Link>
         <button
