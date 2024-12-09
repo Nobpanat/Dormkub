@@ -8,6 +8,10 @@ and the website is styled with Tailwind CSS.
 
 Here is a picture of the website:
 
+![alt text](image-5.png)
+
+![alt text](image-6.png)
+
 ![alt text](image.png)
 
 ![alt text](image-1.png)
