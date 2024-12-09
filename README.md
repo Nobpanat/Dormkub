@@ -6,18 +6,26 @@ The tech stack used includes React, Express.js, and MongoDB.
 Additional tools include JWT and Passport.js (for signup and login with Google),
 and the website is styled with Tailwind CSS.
 
+Here is system architecture:
+
+![alt text](DormkubSystemArchitecture.png)
+
+Here is ER diagram:
+
+![alt text](DormkubERdiagram.png)
+
 Here is a picture of the website:
 
-![alt text](image-5.png)
+![alt text](homepageFirst.png)
 
-![alt text](image-6.png)
+![alt text](loginPage.png)
 
-![alt text](image.png)
+![alt text](homepageAfter.png)
 
-![alt text](image-1.png)
+![alt text](detailRoom.png)
 
-![alt text](image-2.png)
+![alt text](manageRoomPage.png)
 
-![alt text](image-3.png)
+![alt text](bookingList.png)
 
-![alt text](image-4.png)
+![alt text](historyPage.png)
