@@ -21,11 +21,11 @@ const LoginPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex justify-center items-center h-full">
+      <main className="flex justify-center items-center h-5/6">
         <div className="border border-gray-300 shadow-md rounded-md w-[600px] h-[300px] flex items-center p-4">
           {/* Left Section */}
           <div className="flex-1 flex flex-col items-center">
-          <img src={logo} alt="Logo" className="w-32 h-24" />
+          <img src={logo} alt="Logo" className="w-48 h-24" />
             {/* <div className="h-24 w-24 bg-gray-300 mb-4" /> */}
             
           </div>
